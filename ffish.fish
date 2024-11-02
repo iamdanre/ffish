@@ -1,4 +1,5 @@
 #!/usr/bin/env fish
+
 # brew?
 if type -q brew
     if not contains /opt/homebrew/bin $PATH
@@ -6,17 +7,19 @@ if type -q brew
         echo "added /opt/homebrew/bin to PATH"
     end
 end
+
 # fish
 echo "🐠 $(which fish)"
 
-#  OS and architecture
+# OS and architecture
 set ARCH (node -e "console.log(process.arch)")
 set OS (uname -s)
+
 # package manager
 if type -q pnpm # replace with bun/yarn/deno/etc
     set PACKAGE_MANAGER pnpm # also replace this
     set INSTALL_CMD add # and this
-else #default npm
+else # default npm
     set PACKAGE_MANAGER npm
     set INSTALL_CMD install
 end
@@ -29,12 +32,29 @@ if test "$OS" = Darwin -a "$ARCH" = arm64
 
     # TODO check taps
     # shell
-    brew install eza zoxide bat node pnpm bun yarn curl fzf git gh gping htop m-cli mailpit mas memcached micro neovim webtorrent-cli wget
+    brew install eza zoxide bat node pnpm bun yarn curl php composer fzf git gh gping htop m-cli mailpit mas memcached micro neovim webtorrent-cli wget
     # casks
     brew install --cask iterm dbngin font-geist-mono-nerd-font font-jetbrains-mono font-monaspace iterm2 keka orbstack raycast
 end
 
-# helper functions
+# Install fisher and plugins
+if not functions -q fisher
+    # Install fisher if not already installed
+    echo "Installing Fisher..."
+    curl -sL https://git.io/fisher | source && fisher install jorgebucaran/fisher
+end
+
+# Install Fisher plugins
+echo "Installing Fisher plugins..."
+fisher install jorgebucaran/fisher
+fisher install jorgebucaran/autopair.fish
+fisher install demartini/upmm.fish
+fisher install meaningful-ooo/sponge
+fisher install jethrokuan/z
+fisher install archmagees/swift-fish-completion
+fisher install ilancosman/tide@v6
+
+# Helper functions
 echo "💡 try 'artisan ' and hit tab for available artisan commands, no need to prepend 'php '"
 function artisan -d 'Alias that helps fish recognize artisan as a command that should be completed'
     php artisan $argv
@@ -53,18 +73,16 @@ function portsinuse -d 'check which ports are being used'
 end
 funcsave portsinuse
 
-# php
+# PHP
 set PHP_PATH (which php)
 if test -z "$PHP_PATH"
     echo "PHP is not installed."
 else
     echo "🐘 $PHP_PATH"
 end
-# function dev
-#     command composer run dev
-# end
 
-echo "🚀 run 'dev' for a lit laravel development server"
+# Laravel dev server
+echo "🚀 run 'dev' for a lit Laravel development server"
 function dev -d 'laravel dev server 🔥'
     set -x COMPOSER_PROCESS_TIMEOUT 0
     npx concurrently -c "#93c5fd,#c4b5fd,#fb7185,#fdba74" "php artisan serve" "php artisan queue:listen --tries=1" "php artisan pail" "npm run dev --silence-deprecations" --names=server,queue,logs,vite
