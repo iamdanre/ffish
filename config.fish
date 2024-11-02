@@ -1,7 +1,7 @@
 function fish_greeting
     if not set -q fish_greeting
-        set -l line1 (printf (_ 'welcome to %sffish%s, the fucking friendly interactive shell') (set_color white) (set_color normal))
-        set -l line2 \n(printf (_ 'type %shelp%s for instructions on how to fuck fish %s≽⋆< /ᐷ%s') (set_color green) (set_color normal) (set_color brblue))
+        set -l line1 (printf (_ 'welcome to %sffish%s, the fucked friendly interactive shell') (set_color white) (set_color normal))
+        set -l line2 \n(printf (_ 'type %shelp%s for instructions on how to use fish %s≽⋆f< /ᐷ%s') (set_color green) (set_color normal) (set_color brmagenta))
         set -g fish_greeting "$line1$line2"
     end
 
