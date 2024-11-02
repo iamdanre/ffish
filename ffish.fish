@@ -73,6 +73,12 @@ function portsinuse -d 'check which ports are being used'
 end
 funcsave portsinuse
 
+echo "🐋 spin up a clean shell (requires a docker runtime)"
+function freshfish -d 'new shell on alpine 🦈'
+    docker run -it --rm alpine:latest sh -c "apk add --no-cache fish && fish"
+end
+funcsave freshfish
+
 # PHP
 set PHP_PATH (which php)
 if test -z "$PHP_PATH"
