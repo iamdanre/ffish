@@ -1,3 +1,10 @@
+if type -q brew
+    if not contains /opt/homebrew/bin $PATH
+        set -gx PATH /opt/homebrew/bin $PATH
+        echo "added /opt/homebrew/bin to PATH"
+    end
+end
+
 function fish_greeting
     if not set -q fish_greeting
         set -l line1 (printf (_ 'welcome to %sffish%s, the fucked friendly interactive shell') (set_color white) (set_color normal))
@@ -23,11 +30,12 @@ end
 #  SETUVAR fish_greeting
 if status is-interactive
     # Commands to run in interactive sessions can go here
-    # printf '\eP$f{"hook": "SourcedRcFileForWarp", "value": { "shell": "fish"}}\x9c'
 end
 
 # Created by `pipx` on 2024-04-01 00:22:04
 # set PATH $PATH /Users/o.x.o/.local/bin
+
+fish_add_path -U $HOME/Library/Application\ Support/Herd/bin/
 
 # Load fish provided completions
 if test -d ~/.config/fish/completions
@@ -36,12 +44,10 @@ if test -d ~/.config/fish/completions
     end
 end
 
+# herd completion fish | source
 # source /Users/o.x.o/.config/fish/completions/herd.fish
 
 # source (herd completion fish | psub)
-# tabtab source for packages
-# uninstall by removing these lines
-# [ -f ~/.config/tabtab/fish/__tabtab.fish ]; and . ~/.config/tabtab/fish/__tabtab.fish; or true
 
 # pnpm
 # set -gx PNPM_HOME "/Users/o.x.o/Library/pnpm"
@@ -65,3 +71,5 @@ end
 # source /opt/homebrew/opt/asdf/libexec/asdf.fish
 # uv generate-shell-completion fish | source
 # uvx --generate-shell-completion fish | source
+
+# eval (/bin/bash '/Users/o.x.o/.config/fish/themes/TinaciousDesignDark.sh')

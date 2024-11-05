@@ -32,9 +32,9 @@ if test "$OS" = Darwin -a "$ARCH" = arm64
 
     # TODO check taps
     # shell
-    brew install eza zoxide bat node pnpm bun yarn curl php composer fzf git gh gping htop m-cli mailpit mas memcached micro neovim webtorrent-cli wget
+    brew install eza zoxide bat node pnpm curl fzf git gh gping htop m-cli mailpit micro neovim webtorrent-cli wget
     # casks
-    brew install --cask iterm dbngin font-geist-mono-nerd-font font-jetbrains-mono font-monaspace iterm2 keka orbstack raycast
+    brew install --cask iterm dbngin font-jetbrains-mono font-monaspace font-meslo-lg-nerd-font iterm2 keka orbstack raycast
 end
 
 # Install fisher and plugins
@@ -53,13 +53,14 @@ fisher install meaningful-ooo/sponge
 fisher install jethrokuan/z
 fisher install archmagees/swift-fish-completion
 fisher install ilancosman/tide@v6
+fisher install plttn/fish-eza
 
 # Helper functions
-echo "💡 try 'artisan ' and hit tab for available artisan commands, no need to prepend 'php '"
-function artisan -d 'Alias that helps fish recognize artisan as a command that should be completed'
-    php artisan $argv
-end
-funcsave artisan
+echo "💡 artisan ⇥ "
+# https://github.com/adriaanzon/fish-artisan-completion
+curl -L --create-dirs -o ~/.config/fish/completions/artisan.fish https://github.com/adriaanzon/fish-artisan-completion/raw/master/completions/artisan.fish
+curl -L --create-dirs -o ~/.config/fish/completions/php.fish https://github.com/adriaanzon/fish-artisan-completion/raw/master/completions/php.fish
+curl -L --create-dirs -o ~/.config/fish/functions/artisan.fish https://github.com/adriaanzon/fish-artisan-completion/raw/master/functions/artisan.fish
 
 echo "🌻 remove pesky .DS_Store files with rmds"
 function rmds -d 'remove .DS_Store files recursively from working directory'
@@ -91,6 +92,6 @@ end
 echo "🚀 run 'dev' for a lit Laravel development server"
 function dev -d 'laravel dev server 🔥'
     set -x COMPOSER_PROCESS_TIMEOUT 0
-    npx concurrently -c "#93c5fd,#c4b5fd,#fb7185,#fdba74" "php artisan serve" "php artisan queue:listen --tries=1" "php artisan pail" "npm run dev --silence-deprecations" --names=server,queue,logs,vite
+    pnpx concurrently -c "#93c5fd,#c4b5fd,#fb7185,#fdba74" "php artisan serve" "php artisan queue:listen --tries=1" "php artisan pail" "pnpm run dev --silence-deprecations" --names=server,queue,logs,vite
 end
 funcsave dev
