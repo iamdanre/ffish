@@ -1,7 +1,7 @@
 .DS_Store
 fish_variables
 fishd.*
-completions
-functions
-conf.d
-fish_plugins
+# completions
+# functions
+# conf.d
+# fish_plugins
