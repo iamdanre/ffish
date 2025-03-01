@@ -27,3 +27,6 @@ function _sf_herd.phar
 end
 
 complete -c 'herd.phar' -a '(_sf_herd.phar)' -f
+
+# also add completion for herd
+complete -c herd -a '(_sf_herd.phar)' -f

@@ -5,6 +5,18 @@ if type -q brew
     end
 end
 
+# Load completions quietly
+if test -d ~/.config/fish/completions
+    for file in ~/.config/fish/completions/*.fish
+        source $file >/dev/null 2>&1
+    end
+end
+
+# Prevent fish-eza from recreating aliases on every start
+if not set -q __FISH_EZA_ALIASES_INITIALIZED
+    set -U __FISH_EZA_ALIASES_INITIALIZED 1
+end
+
 function fish_greeting
     if not set -q fish_greeting
         set -l line1 (printf (_ 'welcome to %sffish%s, the fucked friendly interactive shell') (set_color white) (set_color normal))
@@ -31,24 +43,19 @@ if status is-interactive
 end
 
 fish_add_path -U $HOME/Library/Application\ Support/Herd/bin/
-# fish_add_path -U $HOME/Library/Application\ Support/Herd/config/nvm/versions/node/v20.18.0/bin
-
-# Load fish provided completions
-if test -d ~/.config/fish/completions
-    for file in ~/.config/fish/completions/*.fish
-        source $file
-    end
-end
-
-eval "$(/Users/booboo/Library/Application\ Support/Herd/bin/herd.phar completion fish)"
 
 source (/opt/homebrew/bin/starship init fish --print-full-init | psub)
 
 test -e {$HOME}/.iterm2_shell_integration.fish; and source {$HOME}/.iterm2_shell_integration.fish
 
 # pnpm
-set -gx PNPM_HOME "/Users/booboo/Library/pnpm"
+set -gx PNPM_HOME /Users/booboo/Library/pnpm
 if not string match -q -- $PNPM_HOME $PATH
-  set -gx PATH "$PNPM_HOME" $PATH
+    set -gx PATH "$PNPM_HOME" $PATH
 end
 # pnpm end
+
+# mommy
+#if test -d /usr/local/share/fish/vendor_completions.d/
+#    set -p fish_complete_path /usr/local/share/fish/vendor_completions.d/
+#end
