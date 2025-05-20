@@ -5,12 +5,12 @@ function brew_whos_your_mommy -d '👀 show the leaf (parent) of a formula' -a f
     end
     set -l target_formula $formula[1]
 
-    if not command -v $target_formula >/dev/null
-        set_color red
-        printf "'%s' is not a command 💀\n" $target_formula
-        set_color normal
-        return 1
-    end
+    # if not command -v $target_formula >/dev/null
+    #     set_color red
+    #     printf "'%s' is not a command 💀\n" $target_formula
+    #     set_color normal
+    #     return 1
+    # end
 
     if command -v $target_formula >/dev/null && not brew list --formula | grep -q "^$target_formula\$"
         set_color cyan
