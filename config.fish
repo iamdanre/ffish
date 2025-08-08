@@ -38,8 +38,8 @@ if status is-interactive
 end
 
 # herd php config
-set -gx HERD_PHP_83_INI_SCAN_DIR $HOME/Library/Application\ Support/Herd/config/php/83
 set -gx HERD_PHP_84_INI_SCAN_DIR $HOME/Library/Application\ Support/Herd/config/php/84
+# set -gx HERD_PHP_83_INI_SCAN_DIR $HOME/Library/Application\ Support/Herd/config/php/83
 fish_add_path -U $HOME/Library/Application\ Support/Herd/bin/
 
 # test -e {$HOME}/.iterm2_shell_integration.fish; and source {$HOME}/.iterm2_shell_integration.fish
@@ -52,10 +52,10 @@ end
 # pnpm end
 
 # bun
-set -gx BUN_INSTALL /opt/homebrew/bin/bun
-if not string match -q -- $BUN_INSTALL $PATH
-    set -gx PATH "$BUN_INSTALL" $PATH
-end
+# set -gx BUN_INSTALL /opt/homebrew/bin/bun
+# if not string match -q -- $BUN_INSTALL $PATH
+#     set -gx PATH "$BUN_INSTALL" $PATH
+# end
 
 if not string match -q -- $HOME/.bun/bin $PATH
     set -gx PATH "$HOME/.bun/bin" $PATH
@@ -78,7 +78,16 @@ end
 #end
 
 # Added by LM Studio CLI (lms)
-set -gx PATH $PATH /Users/booboo/.lmstudio/bin
+# set -gx PATH $PATH /Users/booboo/.lmstudio/bin
+
+# custom executables
+# set -gx PATH $PATH /Users/booboo/bin
+# Optional: Make all files in the directory executable automatically
+# for file in /Users/booboo/bin/forPath/*
+#     if test -f $file
+#         chmod +x $file
+#     end
+# end
 
 # Load completions quietly
 if test -d ~/.config/fish/completions
@@ -87,9 +96,10 @@ if test -d ~/.config/fish/completions
     end
 end
 
-source (/opt/homebrew/bin/starship init fish --print-full-init | psub)
-
-export PATH="$PATH:$HOME/.local/bin"
+# export PATH="$PATH:$HOME/.local/bin"
+fish_add_path "$HOME/.local/bin"
+# fish_add_path "$HOME/bin"
+source $HOME/bin/fish_include.fish # other local binaries and functions . . .
 
 # Start and persist ssh-agent
 if not pgrep -x ssh-agent > /dev/null
@@ -100,3 +110,7 @@ end
 
 # Load keys from keychain if not already loaded
 ssh-add -l > /dev/null; or ssh-add --apple-load-keychain
+
+source (/opt/homebrew/bin/starship init fish --print-full-init | psub)
+
+string match -q "$TERM_PROGRAM" "kiro" and . (kiro --locate-shell-integration-path fish)
